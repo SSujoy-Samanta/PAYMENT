@@ -1,4 +1,4 @@
-import { HomeIcon, TransactionsIcon, TransferIcon } from "../../components/Icons/dashboardicons";
+import { HomeIcon, P2PIcon, PaymentIcon, TransactionsIcon, TransferIcon } from "../../components/Icons/dashboardicons";
 import { SidebarItem } from "../../components/SlidebarItem";
 
 
@@ -14,6 +14,8 @@ export default function Layout({
                 <SidebarItem href={"/dashboard"} icon={<HomeIcon/>} title="Home" />
                 <SidebarItem href={"/transfer"} icon={<TransferIcon />} title="Transfer" />
                 <SidebarItem href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
+                <SidebarItem href={"/razorpay"} icon={<PaymentIcon />} title="Razor-pay" />
+                <SidebarItem href={"/p2p"} icon={<P2PIcon />} title="P2P" />
             </div>
         </div>
             {children}

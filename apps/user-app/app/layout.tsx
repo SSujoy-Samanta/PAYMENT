@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Provider } from "../components/Provider";
 import { AppBar } from "../components/Appbar";
+import Script from "next/script";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,6 +35,8 @@ export default function RootLayout({
           <footer>footer</footer>
         </Provider>
       </body>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js"/>
     </html>
+    
   );
 }

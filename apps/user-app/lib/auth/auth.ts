@@ -70,41 +70,49 @@ export const NEXT_AUTH={
               (account.provider === "google")
             ) {
               try {
-                const { email, name } = user;
-      
-                const existUser = await prisma.user.findUnique({
-                    where: {
-                        email: email,
-                    },
-                });
-                if (!existUser) {
-                    const salt = await bcrypt.genSalt(10);
-                    // Ensure process.env.SECRET_USER_PASS is defined and not undefined or null
-                    if (!process.env.SECRET_USER_PASS) {
-                        throw new Error(
-                        "SECRET_USER_PASS is not defined in the environment variables",
-                        );
-                    }
-                    const hashPassword = await bcrypt.hash(
-                        process.env.SECRET_USER_PASS,
-                        salt,
-                    );
-                    const newUser = await prisma.user.create({
-                        data: {
-                        name: name,
-                        email: email,
-                        password: hashPassword,
+                    const { email, name } = user;
+        
+                    const existUser = await prisma.user.findUnique({
+                        where: {
+                            email: email,
                         },
                     });
-                    user.id = newUser.id.toString();
+                    if (!existUser) {
+                        const salt = await bcrypt.genSalt(10);
+                        // Ensure process.env.SECRET_USER_PASS is defined and not undefined or null
+                        if (!process.env.SECRET_USER_PASS) {
+                            throw new Error(
+                            "SECRET_USER_PASS is not defined in the environment variables",
+                            );
+                        }
+                        const hashPassword = await bcrypt.hash(
+                            process.env.SECRET_USER_PASS,
+                            salt,
+                        );
+                        const newUser = await prisma.user.create({
+                            data: {
+                                name: name,
+                                email: email,
+                                password: hashPassword,
+                                verified:true
+                            },
+                        });
+                        const userBalance=await prisma.balance.create({
+                           data:{
+                                userId:newUser.id,
+                                amount:0,
+                                locked:0,
+                            }
+                        })
+                        user.id = newUser.id.toString();
+                        return true;
+                    }
+                    user.id = existUser.id.toString();
                     return true;
+                }catch (e: any) {
+                    console.log("Internal Server error");
+                    return false;
                 }
-                user.id = existUser.id.toString();
-                return true;
-              }catch (e: any) {
-                console.log("Internal Server error");
-                return false;
-              }
             }
             return true;
         },

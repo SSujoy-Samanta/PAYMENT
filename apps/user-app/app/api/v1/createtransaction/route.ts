@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({msg:response.message},{status:401});
         }
         return NextResponse.json({ message: "Transaction Initiation Successful" },{status:200});
-    } catch (error) {
+    } catch (error:any) {
         console.error("Error processing request:", error);
         return NextResponse.json(
             { error: "Internal server error" },
